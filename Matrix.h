@@ -8,6 +8,7 @@
 
 #include <string>
 #include <iostream>
+#include <time.h>
 
 class Matrix {
 
@@ -31,7 +32,16 @@ public:
 
 private:
 
-    int getItem(int row, int col);
+    int getItem(int row, int col) const;
+
+    Matrix operate(const Matrix& other, int (*f)(int, int));
+
+    Matrix multiply(const Matrix& other);
+
+    int multiply(int x, int y) const;
+
+    int add(int x, int y) const;
+
 };
 
 

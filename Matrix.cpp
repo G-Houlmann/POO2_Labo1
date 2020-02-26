@@ -8,9 +8,9 @@
 using namespace std;
 
 ostream& operator<<(ostream& os, const Matrix& m){
-    for(int c = 0; i < cols; ++c){
-        for(int r = 0; r < rows; ++r){
-            os << (to_string(values[i]) + " ");
+    for(int c = 0; c < m.cols; ++c){
+        for(int r = 0; r < m.rows; ++r){
+            os << (to_string(m.getItem(r, c)) + " ");
         }
         os << endl;
     }
@@ -32,25 +32,42 @@ Matrix::~Matrix(){
     delete[] values;
 }
 
-Matrix::Matrix& operator=(const Matrix& other){
-    mod = other->mod;
-    cols = other->cols;
-    rows = other->rows;
+Matrix& Matrix::operator=(const Matrix& other){
+    mod = other.mod;
+    cols = other.cols;
+    rows = other.rows;
     delete[] values; //desalloc ancien
-    values = new int[other->rows * other->cols]; //alloc nouveau
+    values = new int[other.rows * other.cols]; //alloc nouveau
     for (int i = 0; i < rows*cols; ++i) { //copie valeurs
-        values[i] = other->values[i];
+        values[i] = other.values[i];
     }
 }
 
-Matrix::int getItem(const Matrix& m,int row, int col){
-    if(m->rows <= row || m->cols <= col){
+int Matrix::getItem(int row, int col) const{
+    if(this->rows <= row || this->cols <= col){
         return 0;
     }
-    return values[row][col];
+    return values[cols * row + col];
 }
 
-Matrix::Matrix multiply(const Matrix& other){
-    int maxRow = max(this->row, other->row);
-    int maxCol = max(this->col, other->col);
+Matrix Matrix::operate(const Matrix& other, int (*f)(int, int)){
+    int maxRow = max(this->rows, other.rows);
+    int maxCol = max(this->cols, other.cols);
+
+    for(int row = 0; row < maxRow; ++row){
+
+    }
 }
+
+Matrix Matrix::multiply(const Matrix& other){
+
+}
+
+int Matrix::multiply(int x, int y) const{
+    return x * y;
+}
+
+int Matrix::add(int x, int y) const{
+    return x + y;
+}
+

@@ -10,6 +10,7 @@ using namespace std;
 int main(){
 
     cout << "ui" << endl;
+    Matrix m(2, 2, 5);
 
     return 0;
 }
