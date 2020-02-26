@@ -11,7 +11,7 @@
 
 class Matrix {
 
-    friend ostream& operator<<(ostream& os, const Matrix& m);
+    friend std::ostream& operator<<(std::ostream& os, const Matrix& m);
 
     int* values;
     int mod;
@@ -25,7 +25,7 @@ public:
     Matrix& operator=(const Matrix& other);
 
     Matrix operator+(const Matrix& other) const; // Matrix newM = m1 + m2
-    //Matrix* operator+(const Matrix& other) const; // Matrix* newMp = m1 + m2
+    //Matrix* operator+(const Matrix& other) const; // Matrix* newMp = m1 + m2 NON FAUT FAIRE UNE METHODE
     Matrix& operator+=(const Matrix& other); // myM += m1
 
 
