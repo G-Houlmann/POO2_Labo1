@@ -7,11 +7,16 @@
 
 
 #include <string>
+#include <iostream>
 
 class Matrix {
 
+    friend ostream& operator<<(ostream& os, const Matrix& m);
+
     int* values;
     int mod;
+    int rows;
+    int cols;
 
 public:
 
@@ -26,8 +31,7 @@ public:
 
 private:
 
-    std::string toString();
-
+    int getItem(int row, int col);
 };
 
 
