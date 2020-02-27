@@ -101,6 +101,7 @@ Matrix& Matrix::operator=(const Matrix& other){
 //Additions
 Matrix& Matrix::operator+=(const Matrix& other){
     this->operate(other, addNumbers);
+    return *this;
 }
 
 Matrix Matrix::operator+(const Matrix& other) const{
@@ -118,6 +119,7 @@ Matrix* Matrix::add(const Matrix& other) const {
 //Soustractions
 Matrix& Matrix::operator-=(const Matrix& other){
     this->operate(other, substractNumbers);
+    return *this;
 }
 
 Matrix Matrix::operator-(const Matrix& other) const{
@@ -136,6 +138,7 @@ Matrix* Matrix::substract(const Matrix &other) const {
 //Multiplications composante par composante
 Matrix& Matrix::operator*=(const Matrix& other){
     this->operate(other, multiplyNumbers);
+    return *this;
 }
 
 Matrix Matrix::operator*(const Matrix& other) const{
