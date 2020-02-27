@@ -9,39 +9,46 @@
 #include <string>
 #include <iostream>
 #include <time.h>
+#include <stdexcept>
 
 class Matrix {
 
     friend std::ostream& operator<<(std::ostream& os, const Matrix& m);
 
-    int* values;
+    int** values;
     int mod;
     int rows;
     int cols;
 
+
 public:
 
     Matrix(int rows, int cols, int mod);
+    Matrix(const Matrix& other);
     ~Matrix();
     Matrix& operator=(const Matrix& other);
 
-    Matrix operator+(const Matrix& other) const; // Matrix newM = m1 + m2
-    //Matrix* operator+(const Matrix& other) const; // Matrix* newMp = m1 + m2 NON FAUT FAIRE UNE METHODE
-    Matrix& operator+=(const Matrix& other); // myM += m1
+    //additions
+    Matrix operator+(const Matrix& other) const;
+    Matrix& operator+=(const Matrix& other);
+    Matrix* add(const Matrix& other) const;
 
+    //soustractions
+    Matrix operator-(const Matrix& other) const;
+    Matrix& operator-=(const Matrix& other);
+    Matrix* substract(const Matrix& other) const;
+
+    //multiplications
+    Matrix operator*(const Matrix& other) const;
+    Matrix& operator*=(const Matrix& other);
+    Matrix* multiply(const Matrix& other) const;
 
 private:
 
     int getItem(int row, int col) const;
 
-    Matrix operate(const Matrix& other, int (*f)(int, int));
-
-    Matrix multiply(const Matrix& other);
-
-    int multiply(int x, int y) const;
-
-    int add(int x, int y) const;
-
+    template <typename Operator>
+    void operate(const Matrix& other, Operator op);
 };
 
 

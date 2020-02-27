@@ -9,8 +9,14 @@ using namespace std;
 
 int main(){
 
-    cout << "ui" << endl;
     Matrix m(2, 2, 5);
+
+    Matrix m2 = m;
+
+    cout << m + m << endl;
+
+    cout << m << endl;
+
 
     return 0;
 }
