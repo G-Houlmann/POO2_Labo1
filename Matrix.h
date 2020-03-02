@@ -10,6 +10,7 @@
 #include <iostream>
 #include <time.h>
 #include <stdexcept>
+#include "Operator.h"
 
 class Matrix {
 
@@ -44,11 +45,12 @@ public:
     Matrix* multiply(const Matrix& other) const;
 
 private:
+    void operate(const Matrix& other, const Operator& op);
 
     int getItem(int row, int col) const;
 
-    template <typename Operator>
-    void operate(const Matrix& other, Operator op);
+    void reallocate(int rows, int cols);
+
 };
 
 

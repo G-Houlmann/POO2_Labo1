@@ -3,7 +3,10 @@
 //
 
 #include "Matrix.h"
-#include <stdlib.h>
+#include "Add.h"
+#include "Substract.h"
+#include "Multiply.h"
+#include <cstdlib>
 
 using namespace std;
 
@@ -33,7 +36,7 @@ ostream& operator<<(ostream& os, const Matrix& m){
 
 
 Matrix::Matrix(int rows, int cols, int mod) {
-    srand (time(NULL));
+
     this->cols = cols;
     this->rows = rows;
     this->mod = mod;
@@ -43,7 +46,7 @@ Matrix::Matrix(int rows, int cols, int mod) {
     for(int i = 0; i < rows; ++i){
         this->values[i] = new int[cols];
         for(int j = 0; j < cols; ++j){
-            this->values[i][j] = rand() % mod;
+            this->values[i][j] = rand() / (RAND_MAX + 1.0) * mod;
         }
     }
 }
@@ -52,7 +55,7 @@ Matrix::Matrix(int rows, int cols, int mod) {
 Matrix::Matrix(const Matrix& other){
     /*TODO: code redondant avec l'autre constructeur
      * Solutions : tout mettre dans un constructeur privé qui prend un tableau et le reste, et mettre random si nullptr.
-     *              sauf que risque d'incohérence entre le tab et les tailles
+     *              sauf que risque d'incohérence entre le tableau et les tailles
      */
 
     this->cols = other.cols;
@@ -96,11 +99,12 @@ Matrix& Matrix::operator=(const Matrix& other){
             values[i][j] = other.getItem(i, j);
         }
     }
-
+    return *this;
 }
 //Additions
 Matrix& Matrix::operator+=(const Matrix& other){
-    this->operate(other, addNumbers);
+    Add op;
+    this->operate(other, op);
     return *this;
 }
 
@@ -118,7 +122,8 @@ Matrix* Matrix::add(const Matrix& other) const {
 
 //Soustractions
 Matrix& Matrix::operator-=(const Matrix& other){
-    this->operate(other, substractNumbers);
+    Substract op;
+    this->operate(other, op);
     return *this;
 }
 
@@ -137,7 +142,8 @@ Matrix* Matrix::substract(const Matrix &other) const {
 
 //Multiplications composante par composante
 Matrix& Matrix::operator*=(const Matrix& other){
-    this->operate(other, multiplyNumbers);
+    Multiply op;
+    this->operate(other, op);
     return *this;
 }
 
@@ -160,19 +166,36 @@ int Matrix::getItem(int row, int col) const{
     return values[row][col];
 }
 
-template <typename Operator>
-void Matrix::operate(const Matrix& other, Operator op){
+
+void Matrix::operate(const Matrix& other, const Operator& op){
     if(this->mod != other.mod) throw invalid_argument("Les modulos ne sont pas identiques\n");
+
     int maxRow = max(this->rows, other.rows);
     int maxCol = max(this->cols, other.cols);
+    if(this->rows < maxRow || this ->cols < maxCol){
+        reallocate(maxRow, maxCol);
+    }
 
     for(int row = 0; row < maxRow; ++row){
         for(int col = 0; col < maxCol; ++col){
-            this->values[row][col] = op(getItem(row, col), other.getItem(row, col)) % mod;
+            this->values[row][col] = op.mod(op.operateIntToInt(getItem(row, col), other.getItem(row, col)), mod);
         }
     }
 }
 
+//TODO redondant avec les constructeurs ? créer une méthode plus générale pour allouer dynamiquement
+void Matrix::reallocate(int row, int col){
+    int** newValues = new int*[row];
+    for(int i = 0; i < row; ++i){
+        newValues[i] = new int[col];
+        for(int j = 0; j < col; ++j){
+            newValues[i][j] = getItem(i, j);
+        }
+    }
+    this->rows = row;
+    this->cols = col;
+    swap(values, newValues);
+}
 
 
 
