@@ -55,6 +55,8 @@ private:
     void reallocate(int rows, int cols, Func filler);
 
     void destroyValues();
+
+    int getRand(int mod, int unused);
 };
 
 

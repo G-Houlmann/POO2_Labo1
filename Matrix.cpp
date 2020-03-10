@@ -166,5 +166,8 @@ void Matrix::destroyValues(){
     delete[] values;
 }
 
+int Matrix::getRand(int modulo, int unused){
+    return rand() / (RAND_MAX + 1.0) * modulo;
+}
 
 
