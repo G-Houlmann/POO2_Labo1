@@ -55,7 +55,7 @@ private:
 
     void destroyValues();
 
-    static int getRand(int mod, int, int);
+    int getRand(int, int);
 };
 
 

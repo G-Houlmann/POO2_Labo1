@@ -12,7 +12,6 @@ public:
     Operator() {};
 
     virtual int operateIntToInt(int i1, int i2) const = 0;
-    virtual int mod(int i, int mod) const;
 };
 
 
