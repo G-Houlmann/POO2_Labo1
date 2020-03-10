@@ -10,6 +10,7 @@
 #include <iostream>
 #include <time.h>
 #include <stdexcept>
+#include <functional>
 #include "Operator.h"
 
 class Matrix {
@@ -45,11 +46,13 @@ public:
     Matrix* multiply(const Matrix& other) const;
 
 private:
+    typedef std::function<int(int,int)> Func;
+
     void operate(const Matrix& other, const Operator& op);
 
-    int getItem(int row, int col) const;
+    int getItem(int row, int col);
 
-    void reallocate(int rows, int cols);
+    void reallocate(int rows, int cols, Func filler);
 
     void destroyValues();
 };

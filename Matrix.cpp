@@ -23,41 +23,17 @@ ostream& operator<<(ostream& os, const Matrix& m){
 }
 
 
-Matrix::Matrix(int rows, int cols, int mod) {
+Matrix::Matrix(int rows, int cols, int mod) 
+    : cols(cols), rows(rows), mod(mod), values(nullptr) {
 
-    this->cols = cols;
-    this->rows = rows;
-    this->mod = mod;
-
-    //Allocation dynamique et remplissage de values
-    this->values = new int*[rows];
-    for(int i = 0; i < rows; ++i){
-        this->values[i] = new int[cols];
-        for(int j = 0; j < cols; ++j){
-            this->values[i][j] = rand() / (RAND_MAX + 1.0) * mod;
-        }
-    }
+    reallocate(rows, cols, bind(&Matrix::getRand, *this, placeholders::_1, placeholders::_2));
 }
 
 
-Matrix::Matrix(const Matrix& other){
-    /*TODO: code redondant avec l'autre constructeur
-     * Solutions : tout mettre dans un constructeur privé qui prend un tableau et le reste, et mettre random si nullptr.
-     *              sauf que risque d'incohérence entre le tableau et les tailles
-     */
-
-    this->cols = other.cols;
-    this->rows = other.rows;
-    this->mod = other.mod;
-
-    this->values = new int*[rows];
-    for(int i = 0; i < rows; ++i){
-        this->values[i] = new int[cols];
-        for(int j = 0; j < cols; ++j){
-            this->values[i][j] = other.getItem(i, j);
-        }
-    }
-
+Matrix::Matrix(const Matrix& other)
+    : cols(other.cols), rows(other.rows), mod(other.mod) {
+    
+    reallocate(rows, cols, bind(&Matrix::getItem, other, placeholders::_1, placeholders::_2));
 }
 
 Matrix::~Matrix(){
@@ -169,12 +145,12 @@ void Matrix::operate(const Matrix& other, const Operator& op){
 }
 
 //TODO redondant avec les constructeurs ? créer une méthode plus générale pour allouer dynamiquement
-void Matrix::reallocate(int row, int col){
+void Matrix::reallocate(int row, int col, Func filler){
     int** newValues = new int*[row];
     for(int i = 0; i < row; ++i){
         newValues[i] = new int[col];
         for(int j = 0; j < col; ++j){
-            newValues[i][j] = getItem(i, j);
+            newValues[i][j] = filler(i, j);
         }
     }
     this->rows = row;
