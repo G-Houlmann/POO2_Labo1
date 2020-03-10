@@ -18,10 +18,9 @@ class Matrix {
     friend std::ostream& operator<<(std::ostream& os, const Matrix& m);
 
     int** values;
-    int mod;
     int rows;
     int cols;
-
+    int mod;
 
 public:
 
@@ -56,7 +55,7 @@ private:
 
     void destroyValues();
 
-    int getRand(int mod, int unused);
+    int getRand(int, int);
 };
 
 

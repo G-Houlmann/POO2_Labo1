@@ -24,14 +24,14 @@ ostream& operator<<(ostream& os, const Matrix& m){
 
 
 Matrix::Matrix(int rows, int cols, int mod) 
-    : cols(cols), rows(rows), mod(mod), values(nullptr) {
+    : values(nullptr), rows(rows), cols(cols), mod(mod) {
 
     reallocate(rows, cols, bind(&Matrix::getRand, *this, placeholders::_1, placeholders::_2));
 }
 
 
 Matrix::Matrix(const Matrix& other)
-    : cols(other.cols), rows(other.rows), mod(other.mod) {
+    : values(nullptr), rows(other.rows), cols(other.cols), mod(other.mod) {
     
     reallocate(rows, cols, bind(&Matrix::getItem, other, placeholders::_1, placeholders::_2));
 }
@@ -134,7 +134,7 @@ void Matrix::operate(const Matrix& other, const Operator& op){
     int maxRow = max(this->rows, other.rows);
     int maxCol = max(this->cols, other.cols);
     if(this->rows < maxRow || this ->cols < maxCol){
-        reallocate(maxRow, maxCol);
+        reallocate(maxRow, maxCol, bind(&Matrix::getItem, *this, placeholders::_1, placeholders::_2));
     }
 
     for(int row = 0; row < maxRow; ++row){
@@ -160,14 +160,16 @@ void Matrix::reallocate(int row, int col, const Func& filler){
 }
 
 void Matrix::destroyValues(){
-    for(int i = 0; i < rows; ++i){
-        delete[] values[i];
+    if (values != nullptr) {
+        for(int i = 0; i < rows; ++i){
+            delete[] values[i];
+        }
+        delete[] values;
     }
-    delete[] values;
 }
 
-int Matrix::getRand(int , int){
-    return rand() / (RAND_MAX + 1.0) * mod;
+int Matrix::getRand(int, int){
+    return (int) (rand() / (RAND_MAX + 1.0) * mod);
 }
 
 
