@@ -26,7 +26,7 @@ ostream& operator<<(ostream& os, const Matrix& m){
 Matrix::Matrix(int rows, int cols, int mod) 
     : values(nullptr), rows(rows), cols(cols), mod(mod) {
 
-    reallocate(rows, cols, bind(&Matrix::getRand, *this, placeholders::_1, placeholders::_2));
+    reallocate(rows, cols, bind(&Matrix::getRand, mod, placeholders::_1, placeholders::_2));
 }
 
 
@@ -168,7 +168,7 @@ void Matrix::destroyValues(){
     }
 }
 
-int Matrix::getRand(int, int){
+int Matrix::getRand(int mod, int, int){
     return (int) (rand() / (RAND_MAX + 1.0) * mod);
 }
 
