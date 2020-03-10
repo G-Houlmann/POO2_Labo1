@@ -47,25 +47,14 @@ Matrix::~Matrix(){
 }
 
 Matrix& Matrix::operator=(const Matrix& other){
-    //désallocation
-    for(int i = 0; i < rows; ++i) {
-        delete [] values[i];
-    }
-    destroyValues();
-
     //copie des valeurs
     mod = other.mod;
     cols = other.cols;
     rows = other.rows;
 
     //Allocation dynamique et copie de values
-    values = new int*[rows];
-    for(int i = 0; i < rows; ++i){
-        values[i] = new int[cols];
-        for(int j = 0; j < cols; ++j){
-            values[i][j] = other.getItem(i, j);
-        }
-    }
+    reallocate(rows, cols, bind(&Matrix::getItem, ref(other), placeholders::_1, placeholders::_2));
+
     return *this;
 }
 //Additions

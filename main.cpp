@@ -15,6 +15,7 @@ int main(){
     Matrix m2(3, 3, 5);
 
     Matrix me4t(m);
+    me4t = m2;
 
     cout << m << endl;
 
