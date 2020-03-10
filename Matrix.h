@@ -52,6 +52,8 @@ private:
     void reallocate(int rows, int cols);
 
     void destroyValues();
+
+    int getRand(int mod, int unused);
 };
 
 
