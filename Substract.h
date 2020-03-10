@@ -10,7 +10,6 @@ class Substract: public Operator {
 public:
     Substract()= default;
     int operateIntToInt(int i1, int i2) const;
-    int mod(int i, int mod) const;
 };
 
 

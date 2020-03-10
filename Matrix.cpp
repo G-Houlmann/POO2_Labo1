@@ -11,6 +11,12 @@
 using namespace std;
 
 
+int modulo(int n, int mod) {
+    int tmp = n % mod;
+    return tmp < 0 ? tmp + mod : tmp;
+}
+
+
 ostream& operator<<(ostream& os, const Matrix& m){
     for(int c = 0; c < m.cols; ++c){
         for(int r = 0; r < m.rows; ++r){
@@ -26,14 +32,14 @@ ostream& operator<<(ostream& os, const Matrix& m){
 Matrix::Matrix(int rows, int cols, int mod) 
     : values(nullptr), rows(rows), cols(cols), mod(mod) {
 
-    reallocate(rows, cols, bind(&Matrix::getRand, *this, placeholders::_1, placeholders::_2));
+    reallocate(rows, cols, bind(&Matrix::getRand, ref(*this), placeholders::_1, placeholders::_2));
 }
 
 
 Matrix::Matrix(const Matrix& other)
     : values(nullptr), rows(other.rows), cols(other.cols), mod(other.mod) {
     
-    reallocate(rows, cols, bind(&Matrix::getItem, other, placeholders::_1, placeholders::_2));
+    reallocate(rows, cols, bind(&Matrix::getItem, ref(other), placeholders::_1, placeholders::_2));
 }
 
 Matrix::~Matrix(){
@@ -41,25 +47,14 @@ Matrix::~Matrix(){
 }
 
 Matrix& Matrix::operator=(const Matrix& other){
-    //désallocation
-    for(int i = 0; i < rows; ++i) {
-        delete [] values[i];
-    }
-    destroyValues();
-
     //copie des valeurs
     mod = other.mod;
     cols = other.cols;
     rows = other.rows;
 
     //Allocation dynamique et copie de values
-    values = new int*[rows];
-    for(int i = 0; i < rows; ++i){
-        values[i] = new int[cols];
-        for(int j = 0; j < cols; ++j){
-            values[i][j] = other.getItem(i, j);
-        }
-    }
+    reallocate(rows, cols, bind(&Matrix::getItem, ref(other), placeholders::_1, placeholders::_2));
+
     return *this;
 }
 //Additions
@@ -134,12 +129,12 @@ void Matrix::operate(const Matrix& other, const Operator& op){
     int maxRow = max(this->rows, other.rows);
     int maxCol = max(this->cols, other.cols);
     if(this->rows < maxRow || this ->cols < maxCol){
-        reallocate(maxRow, maxCol, bind(&Matrix::getItem, *this, placeholders::_1, placeholders::_2));
+        reallocate(maxRow, maxCol, bind(&Matrix::getItem, ref(*this), placeholders::_1, placeholders::_2));
     }
 
     for(int row = 0; row < maxRow; ++row){
         for(int col = 0; col < maxCol; ++col){
-            this->values[row][col] = op.mod(op.operateIntToInt(getItem(row, col), other.getItem(row, col)), mod);
+            this->values[row][col] = modulo(op.operateIntToInt(getItem(row, col), other.getItem(row, col)), mod);
         }
     }
 }
