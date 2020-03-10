@@ -11,19 +11,6 @@
 using namespace std;
 
 
-
-int addNumbers(int x, int y){
-    return x + y;
-}
-
-int substractNumbers(int x, int y){
-    return x * y;
-}
-
-int multiplyNumbers(int x, int y){
-    return x * y;
-}
-
 ostream& operator<<(ostream& os, const Matrix& m){
     for(int c = 0; c < m.cols; ++c){
         for(int r = 0; r < m.rows; ++r){
@@ -32,6 +19,7 @@ ostream& operator<<(ostream& os, const Matrix& m){
         os << endl;
     }
     os << endl;
+    return os;
 }
 
 
@@ -66,17 +54,14 @@ Matrix::Matrix(const Matrix& other){
     for(int i = 0; i < rows; ++i){
         this->values[i] = new int[cols];
         for(int j = 0; j < cols; ++j){
-            this->values[i][j] = other.values[i][j];
+            this->values[i][j] = other.getItem(i, j);
         }
     }
 
 }
 
 Matrix::~Matrix(){
-    for(int i = 0; i < rows; ++i) {
-        delete [] values[i];
-    }
-    delete [] values;
+    destroyValues();
 }
 
 Matrix& Matrix::operator=(const Matrix& other){
@@ -84,7 +69,7 @@ Matrix& Matrix::operator=(const Matrix& other){
     for(int i = 0; i < rows; ++i) {
         delete [] values[i];
     }
-    delete [] values;
+    destroyValues();
 
     //copie des valeurs
     mod = other.mod;
@@ -194,7 +179,15 @@ void Matrix::reallocate(int row, int col){
     }
     this->rows = row;
     this->cols = col;
+    destroyValues();
     swap(values, newValues);
+}
+
+void Matrix::destroyValues(){
+    for(int i = 0; i < rows; ++i){
+        delete[] values[i];
+    }
+    delete[] values;
 }
 
 

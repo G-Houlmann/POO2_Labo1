@@ -51,6 +51,7 @@ private:
 
     void reallocate(int rows, int cols);
 
+    void destroyValues();
 };
 
 
