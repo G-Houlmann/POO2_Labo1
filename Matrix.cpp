@@ -1,21 +1,30 @@
-//
-// Created by gilda on 25.02.2020.
-//
+/**
+ * @file Matrix.cpp
+ * @author Gildas Houlmann, Thibaud Franchetti
+ * @brief Implémentation de la classe Matrix
+ * @date 2020-03-11
+ * 
+ */
 
-#include "Matrix.h"
-#include "Add.h"
-#include "Substract.h"
-#include "Multiply.h"
+#include "Matrix.hpp"
+#include "Add.hpp"
+#include "Substract.hpp"
+#include "Multiply.hpp"
+#include <time.h>
+#include <stdexcept>
 #include <cstdlib>
 
 using namespace std;
 
 
+/*
+    Fonction outil implémentant une version mathématique
+    De l'opérateur %
+*/
 int modulo(int n, int mod) {
     int tmp = n % mod;
     return tmp < 0 ? tmp + mod : tmp;
 }
-
 
 ostream& operator<<(ostream& os, const Matrix& m){
     for(int c = 0; c < m.cols; ++c){
@@ -31,7 +40,13 @@ ostream& operator<<(ostream& os, const Matrix& m){
 
 Matrix::Matrix(int rows, int cols, int mod) 
     : values(nullptr), rows(rows), cols(cols), mod(mod) {
+    
+    if (rows < 0) throw runtime_error("Le nombre de lignes doit être positif ou nul");
+    if (cols < 0) throw runtime_error("Le nombre de colonnes doit être positif ou nul");
+    if (mod <= 0) throw runtime_error("Le modulo doit être strictement positif");
 
+    // Alloue dynamiquement un nouveau tableau de taille rows x cols
+    // Les valeurs sont fournies par la méthode getRand
     reallocate(rows, cols, bind(&Matrix::getRand, ref(*this), placeholders::_1, placeholders::_2));
 }
 
@@ -39,7 +54,8 @@ Matrix::Matrix(int rows, int cols, int mod)
 Matrix::Matrix(const Matrix& other)
     : values(nullptr), rows(other.rows), cols(other.cols), mod(other.mod) {
     
-    reallocate(rows, cols, bind(&Matrix::getItem, ref(other), placeholders::_1, placeholders::_2));
+    if(this != &other)
+        reallocate(rows, cols, bind(&Matrix::getItem, ref(other), placeholders::_1, placeholders::_2));
 }
 
 Matrix::~Matrix(){
@@ -47,14 +63,10 @@ Matrix::~Matrix(){
 }
 
 Matrix& Matrix::operator=(const Matrix& other){
-    //copie des valeurs
-    mod = other.mod;
-    cols = other.cols;
-    rows = other.rows;
-
-    //Allocation dynamique et copie de values
-    reallocate(rows, cols, bind(&Matrix::getItem, ref(other), placeholders::_1, placeholders::_2));
-
+    if (this != &other) {
+        this->mod = other.mod;
+        reallocate(rows, cols, bind(&Matrix::getItem, ref(other), placeholders::_1, placeholders::_2));
+    }
     return *this;
 }
 //Additions
@@ -139,17 +151,18 @@ void Matrix::operate(const Matrix& other, const Operator& op){
     }
 }
 
-//TODO redondant avec les constructeurs ? créer une méthode plus générale pour allouer dynamiquement
-void Matrix::reallocate(int row, int col, Func filler){
-    int** newValues = new int*[row];
-    for(int i = 0; i < row; ++i){
-        newValues[i] = new int[col];
-        for(int j = 0; j < col; ++j){
+void Matrix::reallocate(int rows, int cols, Filler filler){
+    // Alloue dynamiquement et remplit values
+    int** newValues = new int*[rows];
+    for(int i = 0; i < rows; ++i){
+        newValues[i] = new int[cols];
+        for(int j = 0; j < cols; ++j){
             newValues[i][j] = filler(i, j);
         }
     }
-    this->rows = row;
-    this->cols = col;
+
+    this->rows = rows;
+    this->cols = cols;
     destroyValues();
     swap(values, newValues);
 }
