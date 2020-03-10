@@ -50,9 +50,9 @@ private:
 
     void operate(const Matrix& other, const Operator& op);
 
-    int getItem(int row, int col);
+    int getItem(int row, int col) const;
 
-    void reallocate(int rows, int cols, Func filler);
+    void reallocate(int rows, int cols, const Func& filler);
 
     void destroyValues();
 

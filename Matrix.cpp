@@ -145,7 +145,7 @@ void Matrix::operate(const Matrix& other, const Operator& op){
 }
 
 //TODO redondant avec les constructeurs ? créer une méthode plus générale pour allouer dynamiquement
-void Matrix::reallocate(int row, int col, Func filler){
+void Matrix::reallocate(int row, int col, const Func& filler){
     int** newValues = new int*[row];
     for(int i = 0; i < row; ++i){
         newValues[i] = new int[col];
@@ -166,8 +166,8 @@ void Matrix::destroyValues(){
     delete[] values;
 }
 
-int Matrix::getRand(int modulo, int unused){
-    return rand() / (RAND_MAX + 1.0) * modulo;
+int Matrix::getRand(int , int){
+    return rand() / (RAND_MAX + 1.0) * mod;
 }
 
 
