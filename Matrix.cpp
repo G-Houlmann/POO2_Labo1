@@ -160,10 +160,12 @@ void Matrix::reallocate(int row, int col, Func filler){
 }
 
 void Matrix::destroyValues(){
-    for(int i = 0; i < rows; ++i){
-        delete[] values[i];
+    if (values != nullptr) {
+        for(int i = 0; i < rows; ++i){
+            delete[] values[i];
+        }
+        delete[] values;
     }
-    delete[] values;
 }
 
 int Matrix::getRand(int, int){
