@@ -3,29 +3,48 @@
 //
 
 #include <iostream>
-#include "Matrix.h"
+#include "Matrix.hpp"
 
 using namespace std;
 
 int main(){
-    srand (time(nullptr));
 
+    const int MODULUS = 5;
 
-    Matrix m(2, 2, 5);
-    Matrix m2(3, 3, 5);
+    Matrix one(2, 2, MODULUS);
+    Matrix two(3, 3, MODULUS);
 
-    Matrix me4t(m);
-    me4t = m2;
+    cout << "modulus is " << MODULUS << endl;
 
-    cout << m << endl;
+    cout << "one" << endl << one << endl;
 
-    cout << m2 << endl;
+    cout << "two" << endl << two << endl;
 
-    Matrix* m3 = m.multiply(m2);
+    cout << "one + tow" << endl << one + two << endl;
 
-    cout << *m3;
+    cout << "one - tow" << endl << one - two << endl;
 
-    delete(m3);
+    cout << "one * tow" << endl << one * two << endl;
+
+    Matrix* mptr1 = one.add(two);
+    Matrix* mptr2 = one.substract(two);
+    Matrix* mptr3 = one.multiply(two);
+
+    cout << "dynamic one + tow" << endl << *mptr1 << endl;
+
+    cout << "dynamic one - tow" << endl << *mptr2 << endl;
+
+    cout << "dynamic one * tow" << endl << *mptr3 << endl;
+
+    delete(mptr1);
+    delete(mptr2);
+    delete(mptr3);
+
+    Matrix mDiffMod(2, 2, MODULUS + 1);
+
+    //Uncomment next line to try to operate two Matrixes with different modulus
+    //cout << "Add with two different modulus" << endl << one + mDiffMod << endl;
+
 
 
     return 0;
