@@ -62,11 +62,10 @@ public:
      */
     Matrix(const Matrix& other);
 
-    // Destructeur
-
+    /**
+     * @brief Destructeur
+     */
     ~Matrix();
-
-    // Opérateur d'affectation
 
     /**
      * @brief Opérateur d'affectation
@@ -222,7 +221,7 @@ private:
      * @param filler Fonction retournant un élément pour chaque emplacement
      *  de la nouvelle matrice
      */
-    void reallocate(int rows, int cols, Filler filler);
+    void reallocate(int rows, int cols, const Filler& filler);
 
     /**
      * @brief Supprimer l'attribut values

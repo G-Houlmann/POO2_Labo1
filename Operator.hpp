@@ -14,7 +14,7 @@
 class Operator {
 public:
 
-    Operator() {};
+    Operator() = default;
 
     /**
      * @brief Un opérateur sur les entiers
