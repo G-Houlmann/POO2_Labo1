@@ -40,6 +40,10 @@ ostream& operator<<(ostream& os, const Matrix& m){
 
 Matrix::Matrix(int rows, int cols, int mod) 
     : values(nullptr), rows(rows), cols(cols), mod(mod) {
+    
+    if (rows < 0) throw runtime_error("Le nombre de lignes doit être positif ou nul");
+    if (cols < 0) throw runtime_error("Le nombre de colonnes doit être positif ou nul");
+    if (mod <= 0) throw runtime_error("Le modulo doit être strictement positif");
 
     srand(time(nullptr));
     
