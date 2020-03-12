@@ -162,10 +162,10 @@ void Matrix::reallocate(int rows, int cols, const Filler& filler){
             newValues[i][j] = filler(i, j);
         }
     }
-
+    
+    destroyValues();
     this->rows = rows;
     this->cols = cols;
-    destroyValues();
     swap(values, newValues);
 }
 

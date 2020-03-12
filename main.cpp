@@ -20,21 +20,21 @@ int main(){
 
     cout << "two" << endl << two << endl;
 
-    cout << "one + tow" << endl << one + two << endl;
+    cout << "one + two" << endl << one + two << endl;
 
-    cout << "one - tow" << endl << one - two << endl;
+    cout << "one - two" << endl << one - two << endl;
 
-    cout << "one * tow" << endl << one * two << endl;
+    cout << "one * two" << endl << one * two << endl;
 
     Matrix* mptr1 = one.add(two);
     Matrix* mptr2 = one.substract(two);
     Matrix* mptr3 = one.multiply(two);
 
-    cout << "dynamic one + tow" << endl << *mptr1 << endl;
+    cout << "dynamic one + two" << endl << *mptr1 << endl;
 
-    cout << "dynamic one - tow" << endl << *mptr2 << endl;
+    cout << "dynamic one - two" << endl << *mptr2 << endl;
 
-    cout << "dynamic one * tow" << endl << *mptr3 << endl;
+    cout << "dynamic one * two" << endl << *mptr3 << endl;
 
     delete(mptr1);
     delete(mptr2);
