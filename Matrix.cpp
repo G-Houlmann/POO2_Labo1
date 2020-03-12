@@ -45,7 +45,7 @@ Matrix::Matrix(int rows, int cols, int mod)
     if (cols < 0) throw runtime_error("Le nombre de colonnes doit être positif ou nul");
     if (mod <= 0) throw runtime_error("Le modulo doit être strictement positif");
 
-    srand(time(nullptr));
+    srand((unsigned) time(nullptr));
 
     // Alloue dynamiquement un nouveau tableau de taille rows x cols
     // Les valeurs sont fournies par la méthode getRand

@@ -42,10 +42,12 @@ int main(){
 
     Matrix mDiffMod(2, 2, MODULUS + 1);
 
-    //Uncomment next line to try to operate two Matrixes with different modulus
-    //cout << "Add with two different modulus" << endl << one + mDiffMod << endl;
-
-
+    cout << "Add with two different modulus" << endl;
+    try {
+         cout << one + mDiffMod << endl;
+    } catch (const invalid_argument& e) {
+        cout << "An error occured : " << e.what() << endl;
+    }
 
     return 0;
 }
