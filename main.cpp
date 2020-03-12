@@ -1,6 +1,10 @@
-//
-// Created by gilda on 26.02.2020.
-//
+/**
+ * @file main.cpp
+ * @author Gildas Houlmann, Thibaud Franchetti
+ * @brief Programme de test de la classe Matrix
+ * @date 2020-03-11
+ * 
+ */
 
 #include <iostream>
 #include "Matrix.hpp"
